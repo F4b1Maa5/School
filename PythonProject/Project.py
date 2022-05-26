@@ -7,19 +7,6 @@ import os
 import mysql.connector
 
 
-# con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
-# cursor = con.cursor()
-# cursor.execute("INSERT INTO mdbelege (`Belegart`) VALUES ('WE')")
-# cursor.execute("SELECT * FROM mdbelege")
-# for i in cursor:
-#     print(i)
-# cursor.close()
-# con.commit() #commit muss durchgefürt werden, damit die Daten in die Datenbank geschrieben werden un nicht erst im Transaktionsprotokoll geschrieben werden
-# con.disconnect()
-# con.close()
-
-
-
 # Die folgende Funktion soll ausgeführt werden, wenn
 # der Benutzer den Button anklickt
 def we_button_action():
@@ -200,11 +187,11 @@ def SaveWAPositions(window,positionen):
                     elif str(cr[0]) == pos[4]:
                         DeleteDB(cr,pos,i)
                     else :
-                        print("Fehler !")
+                        print("Fehler ! nicht genügend Ware verfügbar")
                 cursor.close()
                 con.disconnect()
                 con.close()                 
-    ClearDatainCSV(positionen)
+    DeleteFromDB(positionen)
     window.destroy()
 
 
@@ -238,10 +225,10 @@ def SavePositions(window,positionen):
         con.commit() #commit muss durchgefürt werden, damit die Daten in die Datenbank geschrieben werden un nicht erst im Transaktionsprotokoll geschrieben werden
         con.disconnect()
         con.close()
-    ClearDatainCSV(positionen)
+    DeleteFromDB(positionen)
     window.destroy()
 
-def ClearDatainCSV(positionen):   
+def DeleteFromDB(positionen):   
     for pos in positionen:
         con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
         cursor = con.cursor()
