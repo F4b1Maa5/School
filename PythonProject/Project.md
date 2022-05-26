@@ -66,8 +66,9 @@ def OpenNewWindowBeleg(beleg):
 **Information zu DrawNewPositionContent**: Hier wird das Fenster selbst übergebn, die Positionen welcher der Beleg hat und die Start Position, von welcher aus die Positionen gezählt werden. Wichtig ist das das Fenster selber übergeben wird, da dies in der Methode sich der Inhalt des Fenster dynamisch neu erzeugt.
 
 ### 2.1.2 DrawNewPositionContetnt()
-
+w
 ```python
+### Nur entscheidender Code welcher für weitere Logik relevant ist ###
  menge_txt.insert("end",positionen[i][4])
     if positionen.__len__()-1 > i:
         next_button = tk.Button(window, text="Next",command= lambda : LoadNewPosition(window,positionen,i,menge_txt.get("1.0","end")), height= 5, width=10)
