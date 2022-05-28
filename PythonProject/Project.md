@@ -26,7 +26,7 @@ def Wareneingang():
             listbox.insert("end",beleg)   # Belege der listbox anfügen 
 ```
 
-Dies ist die Vorbereitungsmethode um alle Wareneingangsbelege aus der Datenbank zu landen und in der Optionsliste anzuzeigen. Hierzu wird die Hilfsmethode [ReadDatafromDB(table_name)](#31-readdatafromdbtablename) benutzt. Nun werden alle Belege welche nicht ‚WE‘ sind aus dieser Liste entfernt und die restlichen werden in die Auswahlliste hinzugefügt.
+Dies ist die Vorbereitungsmethode um alle Wareneingangsbelege aus der Datenbank zu landen und in der Optionsliste anzuzeigen. Hierzu wird die Hilfsmethode [ReadDatafromDB(table_name)](#31-readdatafromdbtable_name) benutzt. Nun werden alle Belege welche nicht ‚WE‘ sind aus dieser Liste entfernt und die restlichen werden in die Auswahlliste hinzugefügt.
 
 ---
 </br>
@@ -141,7 +141,7 @@ Dementsrpechend werden die Datenbank Operationen der Hilfsmethoden aufgerufen ([
 
 ## 2.3 Inventur
 
-Über den Button Inventur kann eine Inventur über das gesamte Lager durchgeführt werden. Hierbei werden ledichlich die Daten aller Lagerplätze aus der Datenbank geladen. Hier wird auch wieder die Hilfsmethode [ReadDatafromDB()](#31-readdatafromdbtablename) verwendet. Auch hierbei wird nun ein neues sich dynamisch veränderdes Fenster erstellt. In welchem man auch wie Wareneingabe und Warenausgang die anzegeigten Komponenten dynamisch Austauschen kann und so verschiedene Funktionen an verschiedenen Stellen bereitstellen kann.
+Über den Button Inventur kann eine Inventur über das gesamte Lager durchgeführt werden. Hierbei werden ledichlich die Daten aller Lagerplätze aus der Datenbank geladen. Hier wird auch wieder die Hilfsmethode [ReadDatafromDB()](#31-readdatafromdbtable_name) verwendet. Auch hierbei wird nun ein neues sich dynamisch veränderdes Fenster erstellt. In welchem man auch wie Wareneingabe und Warenausgang die anzegeigten Komponenten dynamisch Austauschen kann und so verschiedene Funktionen an verschiedenen Stellen bereitstellen kann.
 
 ```python
 def PerformInventur():
