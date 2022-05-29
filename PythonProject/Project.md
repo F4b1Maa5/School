@@ -310,8 +310,10 @@ def UpdateDB(cr,pos,i):
 | Parameter | i |```List<string>```|
 | Rückgabe  | void | ```void / null```|
 
+Hierbei handelt es sich um eine Spezialmethode für den Warenausgabg, da sobald die ausgehende Ware gleich der Ware im Lager ist muss diese Position aus der Datenbank entfenert werden, damit diese nicht gebucht werden kann. Hierfür wird wieder die Menge im Curser übergeben
+
 ```python
-def DeleteDB(cr,pos,i):
+def DeleteDB(i):
     con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
     cursor = con.cursor()
     cursor.execute("DELETE FROM lagerplaetze WHERE id = "+ str(i[0]))
