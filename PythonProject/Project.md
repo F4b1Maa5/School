@@ -102,12 +102,12 @@ In dieser Methode wird der Inhalt des Fenster neu gezeichnet und neu defeniert. 
 
 ### 2.2.2.1 SavePositions
 
-Hier werden als Parameter alle Positionen aus dem Beleg übergeben, desweitern wird auch das Fenster-Objekt übergeben. Desweitern werden die bearbieteten Position und belege aus der Datenbak entfernt, damit diese nicht mehrfach gebucht werden können. Dafür wird die Hilfsmethode [DeleteFromDB(positionen)]() verwendet.
+Hier werden als Parameter alle Positionen aus dem Beleg übergeben, desweitern wird auch das Fenster-Objekt übergeben. Desweitern werden die bearbieteten Position und belege aus der Datenbak entfernt, damit diese nicht mehrfach gebucht werden können. Dafür wird die Hilfsmethode [DeleteFromDB(positionen)](#32-deletefromdbpositionen) verwendet.
 
 ```python
 def SavePositions(window,positionen):
     for pos in positionen:
-        con = mysql.connector.connect(user='root', password='*****',host='localhost',database='dbo')
+        con = mysql.connector.connect(user='root', password='******',host='localhost',database='dbo')
         cursor = con.cursor()
         cursor.execute("INSERT INTO lagerplaetze (`Artikel`,`Menge`) VALUES ( %s , %s)",  (pos[3] , pos[4])) # %s dient als Parameter
         cursor.close()
@@ -133,7 +133,7 @@ Hierbei werden die Positionen welche in einem Warenausgang gebucht werden aus de
 | Lagermenge = gebuchte Menge| ``` elif menge == pos[menge] ``` | DELETE FROM lagerplaetze Where Artikel = pos[artikel]|
 | Lagermenge < gebuchte Menge|``` else ```| print("Fehler ! nicht genügend Ware verfügbar")|
 
-Dementsrpechend werden die Datenbank Operationen der Hilfsmethoden aufgerufen ([UpdateDB()]() oder [DeleteDB()]())
+Dementsrpechend werden die Datenbank Operationen der Hilfsmethoden aufgerufen ([UpdateDB()](#33-updatedbcrposi) oder [DeleteDB()](#34-deletedbcrposi))
 
 ---
 
@@ -175,7 +175,9 @@ Wie ob angegeben kann so geschaut werden, welceh Command geladen werden muss. Ob
 
 ### 2.3.2 SaveIV
 
-Hierbei werden die Eingaben, welche wärende der Inventur gemacht wurden verarbeitet. Denn nun wird jede Postionen in die entsprechende Inventur Tabelle geschrieben mit Artikel der Menge welche es laut Datenbak sein soll, dem Wert welcher gezählt wurde und die Diefferenz welche sich aus den beiden Werten ergibt. Hierbei ist zu achten, da nur mit Integer gerechnet werden kann. Und so die eingaben welche durch den Nutzer getätigt werden umgewandet werden. Hier in diesem fall verwenden wir einen [expleziten cast]() verwendet, welcher natürlich bei falscher Nutzer eingabe zu Fehlern führt.
+Hierbei werden die Eingaben, welche wärende der Inventur gemacht wurden verarbeitet. Denn nun wird jede Postionen in die entsprechende Inventur Tabelle geschrieben mit Artikel der Menge welche es laut Datenbak sein soll, dem Wert welcher gezählt wurde und die Diefferenz welche sich aus den beiden Werten ergibt. Hierbei ist zu achten, da nur mit Integer gerechnet werden kann. Und so die eingaben welche durch den Nutzer getätigt werden umgewandet werden. Hier in diesem fall verwenden wir einen [expleziten cast][1] verwendet, welcher natürlich bei falscher Nutzer eingabe zu Fehlern führt.
+
+[1]:#41-explizites-casten
 
 ```python
 def SaveIV(window,iv):    
@@ -216,7 +218,16 @@ liste = ReadDatafromDB("inventur")
 
 # 3 Hilfsmethoden
 
+Hierbei werden alle Methoden aufgelistet welche nicht im direkten zusammenhang zum eigentlich Programm stehen. Sondern entsprechende Aufgaben für das Programm übernehemen, aber nicht in einem spezifischen kontext sondern generell für das gesatmmte Projekt.
+
 ## 3.1 ReadDatafromDB(table_name)
+
+| Parameter / Rückgabe | Name | Datentyp|
+|:------------------: |:-------------------:| :---------------:|
+| Parameter | table_name|```string```|
+| Rückgabe | liste | ```Array[List<string>]```|
+
+Diese Methode nimmt einen string parameter entgegen. Diser defeniert von welcher tabelle die abfrage gestatet werden soll. Hierbei wird ein simples ```Select * From "table_name"``` ausgeführt. Dies führt dazu, das man diese Methode überall dort verwenden kann wo man die Daten aus der Datenbank laden möchte. Man muss lediglich die Tabelle übergeben aus welcher man die Daten abfragen möchte. So kann eine gewisse modluarität für das Projekt gewährleistet werden. Desweitern hat diese Abfrage den Vorteil, das man auf den Index der Datenbank zugreifen kann und so den [primär Schlüssel](#42-primär-schlüssel) der Tabelle zuverfügung hat. Diesen kann man dann für ein Update oder Delete übergeben und hat den entsprechenden Eintrag.
 
 ```python
 def ReadDatafromDB(table_name):
@@ -231,4 +242,88 @@ def ReadDatafromDB(table_name):
     return liste
 ```
 
+</br>
+
+## 3.2 DeleteFromDB(positionen)
+
+| Parameter / Rückgabe  | Name | Datentyp|
+|:------------------: |:-------------------:| :---------------:|
+| Parameter | positionen |```Array[List<string>]```|
+| Rückgabe  | void | ```void / null```|
+
+Diese Methode löscht die eingebenen Positionen aus der Datenbank und löscht die entsprechendne Belege solad diese abgeschlossen sind aus der Datendank. Hierbei werden die zu löschenenden Positioenn übergeben. Diese werden dann durchlaufen und jede Position wird aus der Datenbank gelöscht. Desweitern wird dann im anschluss der entsprechende Beleg auch aus der Datenbank entfernt, sodass nicht ein Beleg zweimal verbucht werden kann. Um die Datenintegrietät zu wahren.
+
+```python
+def DeleteFromDB(positionen):   
+    for pos in positionen:
+        con = mysql.connector.connect(user='root', password='******',host='localhost',database='dbo')
+        cursor = con.cursor()
+        cursor.execute("DELETE FROM mdbelegepositionen WHERE id = "+ str(pos[0]))
+        cursor.close()
+        con.commit() 
+        con.disconnect()
+        con.close()   
+        con = mysql.connector.connect(user='root', password='******',host='localhost',database='dbo')
+        cursor = con.cursor()
+        cursor.execute("DELETE FROM mdbelege WHERE Id = "+ str(pos[1]))
+        cursor.close()
+        con.commit()
+        con.disconnect()
+        con.close()
+```
+
+</br>
+
+## 3.3 UpdateDB(cr,pos,i)
+
+| Parameter / Rückgabe  | Name | Datentyp|
+|:------------------: |:-------------------:| :---------------:|
+| Parameter | cr |```Position im Cursor```|
+| Parameter | pos |```List<string>```|
+| Parameter | i |```List<string>```|
+| Rückgabe  | void | ```void / null```|
+
+Hierbei handelt es sich um die UpdateMethode bei einem Warenausgabg, wenn mehr Ware an Lager ist als verschickt werden soll. Hierbei wird die Mege aus der Datenbank übergeben welche im Cursor steht, die Position aus der Nutzereingabe und die Position aus der Datenbank selber. Hierbei wird dann die neue Menge errechnet welche sich aus **Datenbank Lagerbestand - Nutzereingabe** errechnet. Nun wir dann die neue Menge an die Position geschrieben welche aus der Übermethode übergeben wurde.
+
+```python
+def UpdateDB(cr,pos,i):
+    newmenge = int(cr[0]) - int(pos[4])
+    con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+    cursor = con.cursor()
+    cursor.execute("Update lagerplaetze SET Menge = '"+ str(newmenge) +"' WHERE id = "+ str(i[0]))
+    con.commit()
+    cursor.close()    
+    con.disconnect()
+    con.close()  
+```
+
+**Hinweis:** Hierbei ist zu beachten, dass wenn es öfters den gleiche Artikel im Lager gibt, dies zu Problem im Warenausgang führen kann.
+
+</br>
+
+## 3.4 DeleteDB(cr,pos,i)
+
+| Parameter / Rückgabe  | Name | Datentyp|
+|:------------------: |:-------------------:| :---------------:|
+| Parameter | cr |```Position im Cursor```|
+| Parameter | pos |```List<string>```|
+| Parameter | i |```List<string>```|
+| Rückgabe  | void | ```void / null```|
+
+```python
+def DeleteDB(cr,pos,i):
+    con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+    cursor = con.cursor()
+    cursor.execute("DELETE FROM lagerplaetze WHERE id = "+ str(i[0]))
+    con.commit()
+    cursor.close()
+    con.disconnect()
+    con.close()  
+```
+
+
 # 4 Weiter Informationen
+
+## 4.1 Explizites Casten
+
+## 4.2 Primär Schlüssel
