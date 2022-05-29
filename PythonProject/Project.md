@@ -113,7 +113,7 @@ In dieser Methode wird der Inhalt des Fenster neu gezeichnet und neu definiert. 
 
 ### 2.2.2.1 SavePositions
 
-Hier werden als Parameter alle Positionen aus dem Beleg übergeben, auserdem wird auch das Fenster-Objekt übergeben. Des Weiteren werden die bearbeiteten Position und Belege aus der Datenbank entfernt, damit diese nicht mehrfach gebucht werden können. Dafür wird die Hilfsmethode [DeleteFromDB(positionen)](#32-deletefromdbpositionen) verwendet.
+Hier werden als Parameter alle Positionen aus dem Beleg übergeben, außerdem wird auch das Fenster-Objekt übergeben. Des Weiteren werden die bearbeiteten Position und Belege aus der Datenbank entfernt, damit diese nicht mehrfach gebucht werden können. Dafür wird die Hilfsmethode [DeleteFromDB(positionen)](#32-deletefromdbpositionen) verwendet.
 
 ```python
 def SavePositions(window,positionen):
@@ -329,7 +329,7 @@ def DeleteDB(i):
     con.close()  
 ```
 
-**Hinweis:** Auserdem ist zu beachten, dass wenn es öfters den gleiche Artikel im Lager gibt, dies zu Problem im Warenausgang führen kann.
+**Hinweis:** Außerdem ist zu beachten, dass wenn es öfters den gleiche Artikel im Lager gibt, dies zu Problem im Warenausgang führen kann.
 
 </br>
 
