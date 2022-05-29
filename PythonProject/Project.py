@@ -58,12 +58,15 @@ def DarwNewWAPositionContent(window,positionen,i):
 
 def Warenausgang():
     mainfenster.title("Easy Log | Warenausgang")
+    listbox.delete(0)
     listbox.delete(0,"end")
     mdBelege = []
     mdBelege = ReadDatafromDB('mdbelege')
-    for row in mdBelege:
-        if row[1] != 'WA':
-            mdBelege.remove(row)
+    count = mdBelege.__len__()
+    for i in range(count):
+        for row in mdBelege:
+            if row[1] != 'WA':
+                mdBelege.remove(row)
     for beleg in mdBelege:
         if beleg.__len__() > 0:
             listbox.insert("end",beleg)
@@ -139,9 +142,11 @@ def Wareneingang():
     mdBelege = []
     listbox.delete(0,"end")
     mdBelege = ReadDatafromDB('mdbelege')
-    for row in mdBelege:        
-        if row[1] != 'WE':                
-            mdBelege.remove(row)
+    count = mdBelege.__len__()
+    for i in range(count):
+        for row in mdBelege:        
+            if row[1] != 'WE':                
+                mdBelege.remove(row)
     for beleg in mdBelege:
         if beleg.__len__() > 0:
             listbox.insert("end",beleg)     
