@@ -70,7 +70,6 @@ def OpenNewWindowBeleg(beleg):
 
 **Information zu DrawNewPositionContent**: Hier wird das Fenster selbst übergebn, die Positionen welcher der Beleg hat und die Start Position, von welcher aus die Positionen gezählt werden. Wichtig ist das das Fenster selber übergeben wird, da dies in der Methode sich der Inhalt des Fenster dynamisch neu erzeugt.
 
----
 </br>
 
 ### 2.2.2 DrawNewPositionContetnt
@@ -96,8 +95,6 @@ In dieser Methode wird der Inhalt des Fenster neu gezeichnet und neu defeniert. 
 
 **Hinweis:** Für den Warenausgang ist es genau gleich wie für den Wareneingang. Es werden zwei unterschidliche Methoden genutzt um es in der Erstellung einfacher zu handhaben.
 
----
-
 </br>
 
 ### 2.2.2.1 SavePositions
@@ -120,7 +117,6 @@ def SavePositions(window,positionen):
 
 Es wird für jede einzelene Position der Artikel und die Menge es Artikels in die Datenbank geschrieben. Hierbei muss geachtet werden, das ``` con.commit() ``` ausgeführt wird. Dies sorgt dafür, das die Änderungen welche durch den Cursor ausgeführet werden auch in die Datenbank übermittelt werden.
 
----
 </br>
 
 ### 2.2.2.2 SaveWAPositions
@@ -175,9 +171,7 @@ Wie ob angegeben kann so geschaut werden, welceh Command geladen werden muss. Ob
 
 ### 2.3.2 SaveIV
 
-Hierbei werden die Eingaben, welche wärende der Inventur gemacht wurden verarbeitet. Denn nun wird jede Postionen in die entsprechende Inventur Tabelle geschrieben mit Artikel der Menge welche es laut Datenbak sein soll, dem Wert welcher gezählt wurde und die Diefferenz welche sich aus den beiden Werten ergibt. Hierbei ist zu achten, da nur mit Integer gerechnet werden kann. Und so die eingaben welche durch den Nutzer getätigt werden umgewandet werden. Hier in diesem fall verwenden wir einen [expleziten cast][1] verwendet, welcher natürlich bei falscher Nutzer eingabe zu Fehlern führt.
-
-[1]:#41-explizites-casten
+Hierbei werden die Eingaben, welche wärende der Inventur gemacht wurden verarbeitet. Denn nun wird jede Postionen in die entsprechende Inventur Tabelle geschrieben mit Artikel der Menge welche es laut Datenbak sein soll, dem Wert welcher gezählt wurde und die Diefferenz welche sich aus den beiden Werten ergibt. Hierbei ist zu achten, da nur mit Integer gerechnet werden kann. Und so die eingaben welche durch den Nutzer getätigt werden umgewandet werden. Hier in diesem fall verwenden wir einen [expleziten cast](#41-explizites-casten) verwendet, welcher natürlich bei falscher Nutzer eingabe zu Fehlern führt.
 
 ```python
 def SaveIV(window,iv):    
@@ -305,12 +299,10 @@ def UpdateDB(cr,pos,i):
 
 | Parameter / Rückgabe  | Name | Datentyp|
 |:------------------: |:-------------------:| :---------------:|
-| Parameter | cr |```Position im Cursor```|
-| Parameter | pos |```List<string>```|
 | Parameter | i |```List<string>```|
 | Rückgabe  | void | ```void / null```|
 
-Hierbei handelt es sich um eine Spezialmethode für den Warenausgabg, da sobald die ausgehende Ware gleich der Ware im Lager ist muss diese Position aus der Datenbank entfenert werden, damit diese nicht gebucht werden kann. Hierfür wird wieder die Menge im Curser übergeben
+Hierbei handelt es sich um eine Spezialmethode für den Warenausgabg, da sobald die ausgehende Ware gleich der Ware im Lager ist muss diese Position aus der Datenbank entfenert werden, damit diese nicht gebucht werden kann. Hierfür wird nur die entsprechende Position übergeben welche glöscht werden soll. Hierfür wird ein einfaches DELETE verwenndet: ```DELETE FROM lagerplaetze WHERE id = "+ str(i[0])```. Dort wird die ID der Position übergeben wodurch die entsprechende Positon gelöscht werden kann.
 
 ```python
 def DeleteDB(i):
@@ -323,9 +315,59 @@ def DeleteDB(i):
     con.close()  
 ```
 
+**Hinweis:** Hierbei ist zu beachten, dass wenn es öfters den gleiche Artikel im Lager gibt, dies zu Problem im Warenausgang führen kann.
+
+</br>
 
 # 4 Weiter Informationen
 
 ## 4.1 Explizites Casten
 
+Von casten wird gesprchen sobald eine Typ konvetierung durchgeführt wird, sprich von einem Datentyp in einen andern Datentyp übergewandelt wird. Bei einem explizieten cast wird dann noch angegeben in welchen Datentyp der Wert gewandelt werden soll. Hier ein kleines Beispiel:
+
+```python
+number = 123
+string_number = "123"
+
+print(type(number))
+print(type(string_number))
+
+##### AUSGABE #####
+<class 'int'>
+<class 'str'>
+
+###_____________CAST________________###
+number = 123
+string_number = "123"
+
+number = str(number)                # expleziter cast in einen String
+string_number = int(string_number)  # expleziter cast in ein Integer
+
+print(type(number))
+print(type(string_number))
+
+#### AUSGABE ####
+<class 'str'>
+<class 'int'>
+
+```
+
+Hierbei gibt es einige Vor und Nachteile welche man beachten sollte wenn man einen expleziten Cast verwendet:
+| Vorteil | Nachteil |
+|:------------------: |:-------------------:|
+| Einach und schnelle Umwandlung von Datentypen | Der Wert welcher gecasted werden soll muss dem Datentyp des Cast entsprechen. Ansonsten läuft der Cast auf einen Fehler dies kann zb ein Buchstabe in einem int cast sein |
+
+---
+</br>
+
 ## 4.2 Primär Schlüssel
+
+Von Primär Schlüsseln werden in Tabellen verwenndet. Hierbei handelt es sich um einen eindeutigen Wert, welcher in der gesammten Tabelle nur einmal vorkommt. Dadurch können Datensätze eindeutig identifiziert werden. Auf diese eindeutigen Werte wir dann auch bei einem UPDATE oder DELETE verwieden, da dadurch immer nur der eine entsprechende Datensatz angesprochen wird und nicht mehrere, was man unter umständen nicht möchte.
+
+| Name | Datentyp | Eigenschaft |
+|:------------------: |:-------------------:| :-------------------:|
+| ID | INTEGER | Primär Schlüssel, Einzigartig, Automatisches Inkrementieren, Nicht Null
+| Artikel | VARCHAR(40) | Nicht Null
+| Menge | VARCHAR(40) | -
+
+**Hinweis:** Hierbei wäre ID nun ein der Primär Schlüssel welcher nur einmal in der Tabelle vorkommen kann. Spricht ID = 1 gibt es exakt eineiziges mal. Dadurch wird über die WHERE Clause mit ID = 1 immer nur der eine Datensatz getroffen.
