@@ -73,6 +73,12 @@ def Warenausgang():
             
 
 def SaveIV(window,iv):    
+    con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+    cursor = con.cursor()
+    cursor.execute("DELETE FROM inventur")
+    con.commit()
+    cursor.close()
+    con.close()
     for pos in iv:
         con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
         cursor = con.cursor()
@@ -124,7 +130,7 @@ def DarwNewIVContent(window,iv,i):
 
 def PrintInventurLog():    
     liste = ReadDatafromDB("inventur") 
-    with open("E:/Project/DB/Inventur.html",'w') as f:
+    with open("H:/Project/DB/Inventur.html",'w') as f:
         f.write("<html>")
         f.write("<table>")
         f.write("<tr><td>ID</td><td>Artikel</td><td>MengeSoll</td><td>MengeIst</td><td>Diff</td></tr>")
@@ -135,7 +141,7 @@ def PrintInventurLog():
             f.write("</tr>")
         f.write("</table>")
         f.write("</html>")
-    webbrowser.open_new_tab("file:///E:/Project/DB/Inventur.html")
+    webbrowser.open_new_tab("file:///H:/Project/DB/Inventur.html")
 
 def Wareneingang():
     mainfenster.title("Easy Log | Wareneingang")
@@ -301,7 +307,11 @@ def OpenNewWindowBeleg(beleg):
             DarwNewWAPositionContent(window,positionen,0)
         else:
             print("Keine Positionen vorhanden")
-    
+ 
+ 
+def close(mainfenster):
+    mainfenster.destroy() 
+       
 
 # Draw Main Window
 mainfenster = tk.Tk()
@@ -313,7 +323,7 @@ wa_button = tk.Button(mainfenster, text="Warenausgang", command=wa_button_action
 iv_button = tk.Button(mainfenster, text="Inventur", command=iv_button_action, height=2, width=10, bg="indigo", fg="snow")
 iv_prt_button = tk.Button(mainfenster, text="Inventur Print", command=iv_prt_button_action, height=2, width=10,bg="grey", fg= "snow")
 refresh_button = tk.Button(mainfenster, text="Refresh", command=refresh_button_action, height=2, width=10,bg="orange", fg= "snow")
-exit_button = tk.Button(mainfenster, text="Beenden", command=mainfenster.quit, height=2, width=10)
+exit_button = tk.Button(mainfenster, text="Beenden", command= lambda : close(mainfenster), height=2, width=10)
 listbox = tk.Listbox(mainfenster, width=70,height=8)
 
 
