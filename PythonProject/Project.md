@@ -1,10 +1,10 @@
 # Anforderungen
 
-Es soll eine Software entwickelt werden, welche einen grafischen zugriff auf eine Datenbank zulässt. Hierbei sollen die wichtigsten Datenbankfunktionen abgedeckt werden. Das ganze Projekt soll in der Skriptsprache Python realisiert werden.
+Es soll eine Software entwickelt werden, welche einen grafischen Zugriff auf eine Datenbank zulässt. Hierbei sollen die wichtigsten Datenbankfunktionen abgedeckt werden. Das ganze Projekt soll in der Skriptsprache Python realisiert werden.
 
 # 1 Beschreibung
 
-Für dieses Projekt haben wir uns das Thema Lagerverwaltungssoftware gewählt. Hierbei handelt es sich lediglich um die Lagerverwaltung, sprich die erstellen der zu verbuchenden Belege oder ähnliches ist nicht integriert. Hierbei haben wir folgende Funktionen implementiert.
+Für dieses Projekt haben wir uns das Thema Lagerverwaltungssoftware gewählt. Hierbei handelt es sich lediglich um die Lagerverwaltung, sprich das erstellen der zu verbuchenden Belege oder ähnliches ist nicht integriert. Hierbei haben wir folgende Funktionen implementiert.
 
 - [Laden der Belege](#21-laden-der-belege)
 - [Listenauswahl](#22-listenauswahl)
@@ -40,14 +40,14 @@ def Wareneingang():
             listbox.insert("end",beleg)   # Belege der listbox anfügen 
 ```
 
-Dies ist die Vorbereitungsmethode um alle Wareneingangsbelege aus der Datenbank zu landen und in der Optionsliste anzuzeigen. Hierzu wird die Hilfsmethode [ReadDatafromDB(table_name)](#31-readdatafromdbtable_name) benutzt. Nun werden alle Belege welche nicht ‚WE‘ sind aus dieser Liste entfernt und die restlichen werden in die Auswahlliste hinzugefügt.
+Dies ist die Vorbereitungsmethode um alle Wareneingangsbelege aus der Datenbank zu laden und in der Optionsliste anzuzeigen. Hierzu wird die Hilfsmethode [ReadDatafromDB(table_name)](#31-readdatafromdbtable_name) benutzt. Nun werden alle Belege, welche nicht "WE" sind aus dieser Liste entfernt und die restlichen werden in die Auswahlliste hinzugefügt.
 
 ---
 </br>
 
 ## 2.2 Listenauswahl
 
-Hierbei wird auf das „OnDoubleClick“-Event der Listbox reagiert. Und dann entsprechend die Methode OpenNewWindowBeleg() aufgerufen. Dabei wird als Parameter der selektierte Beleg übergeben.
+Hierbei wird auf das „OnDoubleClick“-Event der Listbox reagiert und dann entsprechend die Methode OpenNewWindowBeleg() aufgerufen. Dabei wird als Parameter der selektierte Beleg übergeben.
 
 ```python
 listbox.bind('<Double-1>',lambda x : OpenNewWindowBeleg(listbox.selection_get().split())) 
@@ -59,7 +59,7 @@ listbox.bind('<Double-1>',lambda x : OpenNewWindowBeleg(listbox.selection_get().
 
 ### 2.2.1 OpenNewWindowBeleg
 
-In dieser Methode wird nun anhand des übergebenen Belegs die entsprechenden Belegpositionen geladen. Nun wird anhand des übergebenen Beleg ein neues Fenster erstellt, sollte der Beleg nun ein Wareneingang („WE“) sein so wird das Fenster für einen Wareneingang erstellt. Dies muss so umgesetzt werden, da unterschieden werden muss welche Funktionen die Entsprechenden Buttons auf dem Fenster haben. Dies muss beim erstellen der Fensters schon definiert werden, daher wird hier entsprechend der Belegart das Fenster erzeugt.
+In dieser Methode wird nun anhand des übergebenen Belegs die entsprechenden Belegpositionen geladen. Nun wird anhand des übergebenen Beleg ein neues Fenster erstellt, sollte der Beleg nun ein Wareneingang „WE“ sein so wird das Fenster für einen Wareneingang erstellt. Dies muss so umgesetzt werden, da unterschieden werden muss welche Funktionen die Entsprechenden Buttons auf dem Fenster haben. Außerdem muss beim erstellen der Fensters schon definiert werden, daher wird hier entsprechend der Belegart das Fenster erzeugt.
 
 ```python
 def OpenNewWindowBeleg(beleg):
@@ -82,13 +82,13 @@ def OpenNewWindowBeleg(beleg):
             print("Keine Positionen vorhanden")
 ```
 
-**Information zu DrawNewPositionContent**: Hier wird das Fenster selbst übergeben, die Positionen welcher der Beleg hat und die Start Position, von welcher aus die Positionen gezählt werden. Wichtig ist das das Fenster selber übergeben wird, da dies in der Methode sich der Inhalt des Fenster dynamisch neu erzeugt.
+**Information zu DrawNewPositionContent**: Hier wird das Fenster selbst übergeben, die Positionen welcher der Beleg hat und die Start Position, von welcher aus die Positionen gezählt werden. Wichtig ist dass das Fenster selbst übergen wird, denn diese wird in der Methode dynamisch mit neuem Inhalt gefüllt.
 
 </br>
 
 ### 2.2.2 DrawNewPositionContetnt
 
-In dieser Methode wird der Inhalt des Fenster neu gezeichnet und neu definiert. Daher muss in der Methode vorher das Fenster Objekt übergeben werden damit für die Nächten Button aufrufe, das gleiche Fenster bestehen kann, aber lediglich der Inhalt des Fensters neu gezeichnet werden kann.
+In dieser Methode wird der Inhalt des Fenster neu gezeichnet und neu definiert. Daher muss in der Methode vorher das Fenster Objekt übergeben werden, damit für die Nächten Button aufrufe, das gleiche Fenster verwendet werden kann. Und so lediglich der Inhalt des Fenster ausgetuascht werden kann.
 
 ```python
 ### Nur entscheidender Code welcher für weitere Logik relevant ist ###
@@ -101,9 +101,9 @@ In dieser Methode wird der Inhalt des Fenster neu gezeichnet und neu definiert. 
         save_button = tk.Button(window,text="Save",command=lambda: SavePositions(window,positionen), height= 5, width=10) 
 ```
 
-- Wie man in Codeausschnitt erkenn kann, wird hier wieder mit dem Lambda-Ausdruck gearbeitet , welcher dem command des Buttons eine Methode mit Parametern zuweisen kann, statt einer Methode, welche keine Parameter entgegen nimmt.
+- Wie man im Codeausschnitt erkennen kann, wird hier wieder mit dem Lambda-Ausdruck gearbeitet , welcher dem command des Buttons eine Methode mit Parametern zuweisen kann, statt einer Methode, welche keine Parameter entgegen nimmt.
 
-- Des Weiteren wird unterschieden, ob wir uns an de letzten Position befinden oder in einer vorherigen, denn sobald die letzte Position erreicht wurde, muss der Command für den Next-Button geändert werden und auf eine andere Funktion zu verweisen. Denn an der letzten Postion müssen alle eingaben verarbeitet werden.
+- Des Weiteren wird unterschieden, ob wir uns an der letzten Position befinden oder in einer vorherigen, denn sobald die letzte Position erreicht wurde, muss der Command für den Next-Button geändert werden und auf eine andere Funktion zu verweisen. Denn an der letzten Postion müssen alle Eingaben verarbeitet werden.
 
 - Durch den Save-Button kann das bearbeiten einer Buchung unterbrochen werden, alle bis dahin bearbeiten Positionen werden dann gebucht.
 
@@ -113,7 +113,7 @@ In dieser Methode wird der Inhalt des Fenster neu gezeichnet und neu definiert. 
 
 ### 2.2.2.1 SavePositions
 
-Hier werden als Parameter alle Positionen aus dem Beleg übergeben, des weiteren wird auch das Fenster-Objekt übergeben. Des Weiteren werden die bearbeiteten Position und belege aus der Datenbank entfernt, damit diese nicht mehrfach gebucht werden können. Dafür wird die Hilfsmethode [DeleteFromDB(positionen)](#32-deletefromdbpositionen) verwendet.
+Hier werden als Parameter alle Positionen aus dem Beleg übergeben, auserdem wird auch das Fenster-Objekt übergeben. Des Weiteren werden die bearbeiteten Position und Belege aus der Datenbank entfernt, damit diese nicht mehrfach gebucht werden können. Dafür wird die Hilfsmethode [DeleteFromDB(positionen)](#32-deletefromdbpositionen) verwendet.
 
 ```python
 def SavePositions(window,positionen):
@@ -129,13 +129,13 @@ def SavePositions(window,positionen):
     window.destroy()
 ```
 
-Es wird für jede einzelne Position der Artikel und die Menge es Artikels in die Datenbank geschrieben. Hierbei muss geachtet werden, das ``` con.commit() ``` ausgeführt wird. Dies sorgt dafür, das die Änderungen welche durch den Cursor ausgeführte werden auch in die Datenbank übermittelt werden.
+Es wird für jede einzelne Position der Artikel und die Menge des Artikels in die Datenbank geschrieben. Hierbei muss geachtet werden, das ``` con.commit() ``` ausgeführt wird. Dies sorgt dafür, das die Änderungen welche durch den Cursor ausgeführte werden auch in die Datenbank übermittelt werden.
 
 </br>
 
 ### 2.2.2.2 SaveWAPositions
 
-Hierbei werden die Positionen welche in einem Warenausgang gebucht werden aus der Datenbank gebucht, anhand der angeführten Matrix wird entschieden die Daten verbucht werden.
+Hierbei werden die Positionen welche in einem Warenausgang gebucht werden aus der Datenbank gebucht. Anhand der angeführten Matrix wird entschieden wie die Daten verbucht werden.
 
 | Fall | Umsetzung Code | Datenbank Operation |
 |:------------------ |:-------------------:| -------------------:|
@@ -151,7 +151,7 @@ Dementsprechend werden die Datenbank Operationen der Hilfsmethoden aufgerufen ([
 
 ## 2.3 Inventur
 
-Über den Button Inventur kann eine Inventur über das gesamte Lager durchgeführt werden. Hierbei werden lediglich die Daten aller Lagerplätze aus der Datenbank geladen. Hier wird auch wieder die Hilfsmethode [ReadDatafromDB()](#31-readdatafromdbtable_name) verwendet. Auch hierbei wird nun ein neues sich dynamisch verändertes Fenster erstellt. In welchem man auch wie Wareneingabe und Warenausgang die angezeigten Komponenten dynamisch Austauschen kann und so verschiedene Funktionen an verschiedenen Stellen bereitstellen kann.
+Über den Button Inventur kann eine Inventur über das gesamte Lager durchgeführt werden. Hierbei werden lediglich die Daten aller Lagerplätze aus der Datenbank geladen. Hier wird auch wieder die Hilfsmethode [ReadDatafromDB()](#31-readdatafromdbtable_name) verwendet. Auch hierbei wird nun ein neues sich dynamisch verändertes Fenster erstellt. Damit das laden einer neuen Position und das speichern Inventur über den selben Button durchgeführt werden kann.
 
 ```python
 def PerformInventur():
@@ -179,13 +179,13 @@ if iv.__len__()-1 > i:
         next_button = tk.Button(window, text="Next",command= lambda : SaveAtLastIVPositions(window,iv,i,menge_txt.get("1.0","end").strip()), height= 5, width=10)
 ```
 
-Wie ob angegeben kann so geschaut werden, welceh Command geladen werden muss. Ob es sich um eine neue Position handelt oder um das speichern der Psotion.
+Wie oben im Code angegeben kann so geschaut werden, welcher Command geladen werden muss. Ob es sich um eine neue Position handelt oder um das speichern der Position.
 
 </br>
 
 ### 2.3.2 SaveIV
 
-Hierbei werden die Eingaben, welche während der Inventur gemacht wurden verarbeitet. Denn nun wird jede Postionen in die entsprechende Inventur Tabelle geschrieben mit Artikel der Menge welche es laut Datenbank sein soll, dem Wert welcher gezählt wurde und die Differenz welche sich aus den beiden Werten ergibt. Hierbei ist zu achten, da nur mit Integer gerechnet werden kann. Und so die Eingaben welche durch den Nutzer getätigt werden umgewandt werden. Hier in diesem Fall verwenden wir einen [expleziten cast](#41-explizites-casten) verwendet, welcher natürlich bei falscher Nutzer Eingabe zu Fehlern führt.
+Hierbei werden die Eingaben, welche während der Inventur gemacht wurden verarbeitet. Denn nun wird jede Postionen in die Inventur-Tabelle geschrieben mit Artikelname, der Menge welche es laut Datenbank sein soll, dem Wert welcher gezählt wurde und die Differenz welche sich aus den beiden Werten ergibt. Hierbei ist zu achten, da nur mit Integer gerechnet werden kann. Und so die Eingaben welche durch den Nutzer getätigt werden umgewandelt. Hier in diesem Fall verwenden wir einen [expleziten cast](#41-explizites-casten) verwendet, welcher natürlich bei falscher Nutzer Eingabe zu Fehlern führt.
 
 ```python
 def SaveIV(window,iv):    
@@ -204,7 +204,7 @@ def SaveIV(window,iv):
 
 ## 2.4 Inventur Druck
 
-Als Zusatz Funktion haben wir noch eine Druck-Report Funktion eingebunden. Über den Button "Inventur Print" kann eine Inventur Bericht über die letzte Inventur durchgeführt werden. Hierbei werden alle Daten der Inventur aus der Datenbank geladen und in eine HTML Seite eingebaut und ausgegeben. Hierbei fehlt noch der Optische Aspekt, da nur die reinen Daten als Tabelle gedruckt werden ohne Formatierung oder ähnliches.
+Als Zusatz Funktion haben wir noch eine Druck-Report Funktion eingebunden. Über den Button "Inventur Print" kann ein Inventur Bericht über die letzte Inventur durchgeführt werden. Hierbei werden alle Daten der Inventur aus der Datenbank geladen und in eine HTML Seite eingebaut und ausgegeben. Hierbei fehlt noch der Optische Aspekt, da nur die reinen Daten als Tabelle gedruckt werden ohne Formatierung oder ähnliches.
 
 ```python
 liste = ReadDatafromDB("inventur") 
@@ -259,7 +259,7 @@ def ReadDatafromDB(table_name):
 | Parameter | positionen |```Array[List<string>]```|
 | Rückgabe  | void | ```void / null```|
 
-Diese Methode löscht die eingebenden Positionen aus der Datenbank und löscht die entsprechenden Belege sobald diese abgeschlossen sind aus der Datendank. Hierbei werden die zu löschenden Positionen übergeben. Diese werden dann durchlaufen und jede Position wird aus der Datenbank gelöscht. Des Weiteren wird dann im Anschluss der entsprechende Beleg auch aus der Datenbank entfernt, sodass nicht ein Beleg zweimal verbucht werden kann. Um die Datenintegrität zu wahren.
+Diese Methode löscht die übergebenen Positionen aus der Datenbank und löscht den entsprechenden Belege sobald diese abgeschlossen ist aus der Datendank. Hierbei werden die zu löschenden Positionen übergeben. Diese werden dann durchlaufen und jede Position wird aus der Datenbank gelöscht. Des Weiteren wird dann im Anschluss der entsprechende Beleg auch aus der Datenbank entfernt, sodass nicht ein Beleg zweimal verbucht werden kann. Um die Datenintegrität zu wahren.
 
 ```python
 def DeleteFromDB(positionen):   
@@ -291,7 +291,7 @@ def DeleteFromDB(positionen):
 | Parameter | i |```List<string>```|
 | Rückgabe  | void | ```void / null```|
 
-Hierbei handelt es sich um die UpdateMethode bei einem Warenausgang, wenn mehr Ware an Lager ist als verschickt werden soll. Hierbei wird die Menge aus der Datenbank übergeben welche im Cursor steht, die Position aus der Nutzereingabe und die Position aus der Datenbank selber. Hierbei wird dann die neue Menge errechnet welche sich aus **Datenbank Lagerbestand - Nutzereingabe** errechnet. Nun wir dann die neue Menge an die Position geschrieben welche aus der Übermethode übergeben wurde.
+Hierbei handelt es sich um die UpdateMethode bei einem Warenausgang, wenn mehr Ware an Lager ist als verschickt werden soll. Hierbei wird die Menge aus der Datenbank übergeben welche im Cursor steht. Die Position aus der Nutzereingabe und die Position aus der Datenbank selber. Hierbei wird dann die neue Menge errechnet welche sich aus **Datenbank Lagerbestand - Nutzereingabe** errechnet. Nun wird dann die neue Menge an die Position geschrieben welche aus der Übermethode übergeben wurde.
 
 ```python
 def UpdateDB(cr,pos,i):
@@ -316,7 +316,7 @@ def UpdateDB(cr,pos,i):
 | Parameter | i |```List<string>```|
 | Rückgabe  | void | ```void / null```|
 
-Hierbei handelt es sich um eine Spezialmethode für den Warenausgang, da sobald die ausgehende Ware gleich der Ware im Lager ist muss diese Position aus der Datenbank entfernen werden, damit diese nicht gebucht werden kann. Hierfür wird nur die entsprechende Position übergeben welche gelöscht werden soll. Hierfür wird ein einfaches DELETE verwenndet: ```DELETE FROM lagerplaetze WHERE id = "+ str(i[0])```. Dort wird die ID der Position übergeben wodurch die entsprechende Position gelöscht werden kann.
+Hierbei handelt es sich um eine Spezialmethode für den Warenausgang, da sobald die ausgehende Ware gleich der Ware im Lager ist, muss diese Position aus der Datenbank entfernen werden, damit diese nicht gebucht werden kann. Dafür wird nur die entsprechende Position übergeben welche gelöscht werden soll. Dazu wird ein einfaches DELETE verwenndet: ```DELETE FROM lagerplaetze WHERE id = "+ str(i[0])```. Dort wird die ID der Position übergeben wodurch die entsprechende Position gelöscht werden kann.
 
 ```python
 def DeleteDB(i):
@@ -329,7 +329,7 @@ def DeleteDB(i):
     con.close()  
 ```
 
-**Hinweis:** Hierbei ist zu beachten, dass wenn es öfters den gleiche Artikel im Lager gibt, dies zu Problem im Warenausgang führen kann.
+**Hinweis:** Auserdem ist zu beachten, dass wenn es öfters den gleiche Artikel im Lager gibt, dies zu Problem im Warenausgang führen kann.
 
 </br>
 
@@ -366,17 +366,17 @@ print(type(string_number))
 
 ```
 
-Hierbei gibt es einige Vor und Nachteile welche man beachten sollte wenn man einen expleziten Cast verwendet:
+Hierbei gibt es einige Vor- und Nachteile welche man beachten sollte wenn man einen expleziten Cast verwendet:
 | Vorteil | Nachteil |
 |:------------------: |:-------------------:|
-| Einfach und schnelle Umwandlung von Datentypen | Der Wert welcher gecasted werden soll muss dem Datentyp des Cast entsprechen. Ansonsten läuft der Cast auf einen Fehler dies kann z.b. ein Buchstabe in einem int cast sein |
+| Einfach und schnelle Umwandlung von Datentypen | Der Wert welcher gecasted werden soll muss dem Datentyp des Cast entsprechen. Ansonsten läuft der Cast auf einen Fehler dies kann z.B. ein Buchstabe in einem int cast sein |
 
 ---
 </br>
 
 ## 4.2 Primär Schlüssel
 
-Von Primär Schlüsseln werden in Tabellen verwendet. Hierbei handelt es sich um einen eindeutigen Wert, welcher in der gesamten Tabelle nur einmal vorkommt. Dadurch können Datensätze eindeutig identifiziert werden. Auf diese eindeutigen Werte wir dann auch bei einem UPDATE oder DELETE verwiesen, da dadurch immer nur der eine entsprechende Datensatz angesprochen wird und nicht mehrere, was man unter Umständen nicht möchte.
+Primär Schlüssel werden in Datnbanktabellen verwendet. Hierbei handelt es sich um einen eindeutigen Wert, welcher in der gesamten Tabelle nur einmal vorkommt. Dadurch können Datensätze eindeutig identifiziert werden. Auf diese eindeutigen Werte wird dann auch bei einem UPDATE oder DELETE verwiesen. Dadurch wird immer nur der entsprechende und nicht mehrere Datensätze angesprochen, was man Umständen nicht möchte.
 
 | Name | Datentyp | Eigenschaft |
 |:------------------: |:-------------------:| :-------------------:|
@@ -384,4 +384,4 @@ Von Primär Schlüsseln werden in Tabellen verwendet. Hierbei handelt es sich um
 | Artikel | VARCHAR(40) | Nicht Null
 | Menge | VARCHAR(40) | -
 
-**Hinweis:** Hierbei wäre ID nun ein der Primär Schlüssel welcher nur einmal in der Tabelle vorkommen kann. Spricht ID = 1 gibt es exakt ein eiziges mal. Dadurch wird über die WHERE Clause mit ID = 1 immer nur der eine Datensatz getroffen.
+**Hinweis:** Hierbei wäre ID nun ein Primär Schlüssel welcher nur einmal in der Tabelle vorkommen kann. Spricht ID = 1 gibt es exakt ein eiziges mal. Dadurch wird über die WHERE Clause mit ID = 1 immer nur der eine Datensatz getroffen.
