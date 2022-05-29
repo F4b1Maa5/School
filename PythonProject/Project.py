@@ -185,7 +185,7 @@ def SaveWAPositions(window,positionen):
                     if str(cr[0]) > pos[4]:
                        UpdateDB(cr,pos,i)
                     elif str(cr[0]) == pos[4]:
-                        DeleteDB(cr,pos,i)
+                        DeleteDB(i)
                     else :
                         print("Fehler ! nicht genügend Ware verfügbar")
                 cursor.close()
@@ -199,15 +199,13 @@ def UpdateDB(cr,pos,i):
     newmenge = int(cr[0]) - int(pos[4])
     con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
     cursor = con.cursor()
-    print(pos[0])
-    print(newmenge)
     cursor.execute("Update lagerplaetze SET Menge = '"+ str(newmenge) +"' WHERE id = "+ str(i[0]))
     con.commit()
     cursor.close()    
     con.disconnect()
     con.close()   
     
-def DeleteDB(cr,pos,i):
+def DeleteDB(i):
     con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
     cursor = con.cursor()
     cursor.execute("DELETE FROM lagerplaetze WHERE id = "+ str(i[0]))
