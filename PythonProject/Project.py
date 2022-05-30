@@ -1,7 +1,5 @@
 #https://pythonbuch.com/einleitung.html
 import tkinter as tk
-import csv
-import pandas as pd 
 import webbrowser
 import os
 import mysql.connector
@@ -73,14 +71,14 @@ def Warenausgang():
             
 
 def SaveIV(window,iv):    
-    con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+    con = mysql.connector.connect(user='inventuruser', password='inventuruser',host='db4free.net',database='pythoninventur')
     cursor = con.cursor()
     cursor.execute("DELETE FROM inventur")
     con.commit()
     cursor.close()
     con.close()
     for pos in iv:
-        con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+        con = mysql.connector.connect(user='inventuruser', password='inventuruser',host='db4free.net',database='pythoninventur')
         cursor = con.cursor()
         cursor.execute("INSERT INTO inventur (`Artikel`,`MengeSoll`,`MengeIst`,`Diff`) VALUES (%s,%s,%s,%s)",  (pos[1],str(pos[2]),str(pos[3]),str(int(pos[3])-int(pos[2]))))
         con.commit()
@@ -159,7 +157,7 @@ def Wareneingang():
 
 def ReadDatafromDB(table_name):
     liste = []    
-    con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+    con = mysql.connector.connect(user='inventuruser', password='inventuruser',host='db4free.net',database='pythoninventur')
     cursor = con.cursor()
     cursor.execute('SELECT * FROM %s' % table_name)
     result = cursor.fetchall()   
@@ -189,7 +187,7 @@ def SaveWAPositions(window,positionen):
     for pos in positionen: 
         for i in liste: 
             if i[1] == pos[3]:              
-                con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+                con = mysql.connector.connect(user='inventuruser', password='inventuruser',host='db4free.net',database='pythoninventur')
                 cursor = con.cursor()
                 cursor.execute("Select Menge FROM lagerplaetze WHERE Artikel = "+ str(pos[3]))
                 for cr in cursor:
@@ -208,7 +206,7 @@ def SaveWAPositions(window,positionen):
 
 def UpdateDB(cr,pos,i):
     newmenge = int(cr[0]) - int(pos[4])
-    con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+    con = mysql.connector.connect(user='inventuruser', password='inventuruser',host='db4free.net',database='pythoninventur')
     cursor = con.cursor()
     cursor.execute("Update lagerplaetze SET Menge = '"+ str(newmenge) +"' WHERE id = "+ str(i[0]))
     con.commit()
@@ -217,7 +215,7 @@ def UpdateDB(cr,pos,i):
     con.close()   
     
 def DeleteDB(i):
-    con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+    con = mysql.connector.connect(user='inventuruser', password='inventuruser',host='db4free.net',database='pythoninventur')
     cursor = con.cursor()
     cursor.execute("DELETE FROM lagerplaetze WHERE id = "+ str(i[0]))
     con.commit()
@@ -227,7 +225,7 @@ def DeleteDB(i):
 
 def SavePositions(window,positionen):
     for pos in positionen:
-        con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+        con = mysql.connector.connect(user='inventuruser', password='inventuruser',host='db4free.net',database='pythoninventur')
         cursor = con.cursor()
         cursor.execute("INSERT INTO lagerplaetze (`Artikel`,`Menge`) VALUES ( %s , %s)",  (pos[3] , pos[4]))
         cursor.close()
@@ -239,14 +237,14 @@ def SavePositions(window,positionen):
 
 def DeleteFromDB(positionen):   
     for pos in positionen:
-        con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+        con = mysql.connector.connect(user='inventuruser', password='inventuruser',host='db4free.net',database='pythoninventur')
         cursor = con.cursor()
         cursor.execute("DELETE FROM mdbelegepositionen WHERE id = "+ str(pos[0]))
         cursor.close()
         con.commit() 
         con.disconnect()
         con.close()   
-        con = mysql.connector.connect(user='root', password='root',host='localhost',database='dbo')
+        con = mysql.connector.connect(user='inventuruser', password='inventuruser',host='db4free.net',database='pythoninventur')
         cursor = con.cursor()
         cursor.execute("DELETE FROM mdbelege WHERE Id = "+ str(pos[1]))
         cursor.close()

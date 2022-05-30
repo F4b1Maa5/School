@@ -1,5 +1,7 @@
 # School
 
+Keine Lib Datein vorhanden mysql.conntor muss noch installiert werden.
 
-PythonProject/Project.py
-https://www.grund-wissen.de/informatik/python/module-und-pakete.html
+```cmd
+pip install mysql.connctor
+```
