@@ -1,6 +1,6 @@
 import math
 
-eingabe = input("Ihre Eingabe? ")
+eingabe = input("Ihre IPv4 ")
 ipv4 = eingabe.split('.')
 
 nubs = []
