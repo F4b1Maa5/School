@@ -1,4 +1,4 @@
-# School
+# Python Project
 
 Keine Lib Datein vorhanden mysql.conntor muss noch installiert werden.
 
