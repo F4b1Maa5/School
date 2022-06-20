@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<header>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IPv4-Address to IPv6-Address</title>
+    <link rel="stylesheet" href="css/style.css">
+</header>
+<body>
+    <h1>Calculate IPv4-Address to IPv6-Address</h1>
+    <br/>
+    <div>
+        <label>IPv6-Prefix:</label>
+        <input type="text" name="IPv6Prefix" id="IPv6Prefix">
+    </div>
+    <br/>
+    <div>
+        <label>IPv4-Address:</label>
+        <input type="text" name="IPv4" id="IPv4">
+    </div>
+    <div>
+        <label>MAC-Address:</label>
+        <input type="text" name="MAC" id="MAC">
+        <label>EUI64</label>
+        <input type="checkbox" name="EUI64" id="EUI64">
+    </div>    
+    
+    <button id="ipv4" type="button">Convert IPv4 to IPv6</button>
+    <button id="mac" type="button">Convert MAC to IPv6</button>
+    <div class="output"></div>
+    <script src="js/Calculate.js"></script>
+</body>
